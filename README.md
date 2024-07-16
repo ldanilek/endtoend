@@ -4,7 +4,7 @@
 
 This app showcases secure messaging between pairs of users.
 Each message is encrypted end-to-end, so the only place the message exists
-unencrypted is in the sender and receiver's browser.
+unencrypted is in the sender and receiver's browsers.
 
 ## How to use it
 
