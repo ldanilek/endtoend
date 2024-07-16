@@ -1,4 +1,8 @@
-# Convex + React + Convex Auth
+# End-to-End Encrypted Chat with Convex
+
+## [https://endtoendconvex.vercel.app](https://endtoendconvex.vercel.app)
+
+This app show
 
 This is a template for using [Convex](https://docs.convex.dev/) with React and [Convex Auth](https://labs.convex.dev/auth).
 

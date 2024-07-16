@@ -125,7 +125,9 @@ export function DecryptedMessage({ encryptedBody, aesKey }: { encryptedBody: str
   useEffect(() => {
     void (async () => {
       try {
+        console.log("decrypting", encryptedBody);
         const decryptedBody = await decryptString(encryptedBody, aesKey);
+        console.log("decrypted", decryptedBody);
         setDecryptedBody(decryptedBody);
       } catch (error: any) {
         if (error.message) {
