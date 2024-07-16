@@ -2,35 +2,50 @@
 
 ## [https://endtoendconvex.vercel.app](https://endtoendconvex.vercel.app)
 
-This app show
+This app showcases secure messaging between pairs of users.
+Each message is encrypted end-to-end, so the only place the message exists
+unencrypted is in the sender and receiver's browser.
 
-This is a template for using [Convex](https://docs.convex.dev/) with React and [Convex Auth](https://labs.convex.dev/auth).
+## How to use it
 
-## Setting up
+Go to [https://endtoendconvex.vercel.app](https://endtoendconvex.vercel.app)
+and log in with Github. Then you can select a recipient on the left side of the
+page, and start messaging them. If you message yourself, you can use the space
+for writing private notes.
 
-```
-npm create convex@latest -- -t react-vite-convexauth-shadcn
-```
+## How it works
 
-Navigate to the new directory and run:
+Both clients create a public/private key pair. The public and private key are
+stored in the browser's secure storage, and the public key is published to
+the "keys" table in Convex.
+
+To send a message, a client uses an Elliptic Curve Diffie-Hellman key exchange
+to generate an AES key, using the client's private key and the recipient's
+public key. Both the sender and receiver can generate the *same* AES key in this
+way, and with this shared key they can use symmetric AES encyption to encrypt
+and decrypt messages.
+
+## When does it not work?
+
+The encryption keys for an account are stored in the browser's storage,
+so logging in to the same account from a different browser will create new
+keys, causing the user to lose access to all of their previous messages.
+
+## What about Whisper?
+
+Contrast with
+[Whisper](https://stack.convex.dev/end-to-end-encryption-with-convex):
+
+- End-to-End Chat requires login, while Whisper does not.
+- Whisper requires sending the password through a secure channel, while End-to-End Chat uses key exchanges to send passwords securely through insecure channels.
+- Whisper allows secrets to expire, while End-to-End Chat keeps secrets available as long as the client keeps their keys.
+
+## Run it yourself
+
+Set environment variables `AUTH_GITHUB_ID`, `AUTH_GITHUB_SECRET`, `JWKS`,
+`JWT_PRIVATE_KEY`, and `SITE_URL` to configure
+[Convex Auth](https://docs.convex.dev/auth/convex-auth).
 
 ```
 npm run dev
 ```
-
-It'll walk you through the auth environment variables setup.
-
-## The app
-
-The app is a basic multi-user chat. Walk through of the source code:
-
-- [convex/auth.ts](./convex/auth.ts) configures the available authentication methods
-- [convex/messages.ts](./convex/messages.ts) is the chat backend implementation
-- [src/main.tsx](./src/main.tsx) is the frontend entry-point
-- [src/App.tsx](./src/App.tsx) determines which UI to show based on the authentication state
-- [src/SignInForm.tsx](./src/SignInForm.tsx) implements the sign-in UI
-- [src/Chat/Chat.tsx](./src/Chat/Chat.tsx) is the chat frontend
-
-## Configuring other authentication methods
-
-To configure different authentication methods, see [Configuration](https://labs.convex.dev/auth/config) in the Convex Auth docs.
