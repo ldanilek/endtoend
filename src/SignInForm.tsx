@@ -1,8 +1,4 @@
-import { SignInMethodDivider } from "@/components/SignInMethodDivider";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/components/ui/use-toast";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
@@ -19,8 +15,6 @@ export function SignInForm() {
               Sign in or create an account
             </h2>
             <SignInWithGitHub />
-            <SignInMethodDivider />
-            <SignInWithMagicLink handleLinkSent={() => setStep("linkSent")} />
           </>
         ) : (
           <>
@@ -56,6 +50,7 @@ export function SignInWithGitHub() {
   );
 }
 
+/*
 function SignInWithMagicLink({
   handleLinkSent,
 }: {
@@ -87,3 +82,4 @@ function SignInWithMagicLink({
     </form>
   );
 }
+*/
