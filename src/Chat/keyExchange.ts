@@ -57,12 +57,6 @@ export function useKeyPair() {
         ['deriveKey', 'deriveBits']
       ) as KeyPair;
 
-      setKeyPair(generatedKeyPair);
-
-      const publicKeyRaw = await window.crypto.subtle.exportKey('raw', generatedKeyPair.publicKey);
-      const publicKeyBase64 = btoa(String.fromCharCode(...new Uint8Array(publicKeyRaw)));
-      setPublicKeyBase64(publicKeyBase64);
-
       const db = await openDatabase();
       const transaction = db.transaction(STORE_NAME, 'readwrite');
       const store = transaction.objectStore(STORE_NAME);
@@ -71,6 +65,13 @@ export function useKeyPair() {
         storeKey(store, 'publicKey', generatedKeyPair.publicKey),
         storeKey(store, 'privateKey', generatedKeyPair.privateKey)
       ]);
+
+      setKeyPair(generatedKeyPair);
+
+      const publicKeyRaw = await window.crypto.subtle.exportKey('raw', generatedKeyPair.publicKey);
+      const publicKeyBase64 = btoa(String.fromCharCode(...new Uint8Array(publicKeyRaw)));
+      setPublicKeyBase64(publicKeyBase64);
+
     } catch (error) {
       console.error('Error generating key pair:', error);
     }
@@ -129,10 +130,10 @@ export function useKeyPair() {
         256
       );
 
-      // Derive an AES key from the shared secret
-      const aesKey = await window.crypto.subtle.deriveKey(
-        { name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(16), info: new Uint8Array(0) },
-        await window.crypto.subtle.importKey('raw', sharedSecret, { name: 'HKDF' }, false, ['deriveKey']),
+      // Use the shared secret directly as the AES key
+      const aesKey = await window.crypto.subtle.importKey(
+        'raw',
+        sharedSecret,
         { name: 'AES-GCM', length: 256 },
         true,
         ['encrypt', 'decrypt']
