@@ -66,10 +66,10 @@ export function useKeyPair() {
         storeKey(store, 'privateKey', generatedKeyPair.privateKey)
       ]);
 
-      setKeyPair(generatedKeyPair);
-
       const publicKeyRaw = await window.crypto.subtle.exportKey('raw', generatedKeyPair.publicKey);
       const publicKeyBase64 = btoa(String.fromCharCode(...new Uint8Array(publicKeyRaw)));
+
+      setKeyPair(generatedKeyPair);
       setPublicKeyBase64(publicKeyBase64);
 
     } catch (error) {
@@ -94,9 +94,9 @@ export function useKeyPair() {
 
       if (publicKey && privateKey) {
         const loadedKeyPair = { publicKey, privateKey };
-        setKeyPair(loadedKeyPair);
         const publicKeyRaw = await window.crypto.subtle.exportKey('raw', publicKey);
         const publicKeyBase64 = btoa(String.fromCharCode(...new Uint8Array(publicKeyRaw)));
+        setKeyPair(loadedKeyPair);
         setPublicKeyBase64(publicKeyBase64);
       } else {
         await generateKeyPair();
