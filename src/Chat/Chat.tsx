@@ -166,11 +166,17 @@ async function decryptString(ciphertext: string, aesKey: CryptoKey): Promise<str
   const iv = encryptedArray.slice(0, 12);
   const encryptedData = encryptedArray.slice(12);
 
-  const decryptedData = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv },
-    aesKey,
-    encryptedData
-  );
+  let decryptedData: ArrayBuffer;
+  try {
+    decryptedData = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv },
+      aesKey,
+      encryptedData
+    );
+  } catch (error: any) {
+    console.log("decryption error", error);
+    throw error;
+  }
 
   const decoder = new TextDecoder();
   return decoder.decode(decryptedData);
