@@ -130,10 +130,10 @@ export function useKeyPair() {
         256
       );
 
-      // Use the shared secret directly as the AES key
-      const aesKey = await window.crypto.subtle.importKey(
-        'raw',
-        sharedSecret,
+      // Derive an AES key from the shared secret
+      const aesKey = await window.crypto.subtle.deriveKey(
+        { name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(0), info: new Uint8Array(0) },
+        await window.crypto.subtle.importKey('raw', sharedSecret, { name: 'HKDF' }, false, ['deriveKey']),
         { name: 'AES-GCM', length: 256 },
         true,
         ['encrypt', 'decrypt']
