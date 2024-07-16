@@ -19,11 +19,14 @@ Both clients create a public/private key pair. The public and private key are
 stored in the browser's secure storage, and the public key is published to
 the "keys" table in Convex.
 
-To send a message, a client uses an Elliptic Curve Diffie-Hellman key exchange
+To send a message, a client uses an
+[Elliptic Curve Diffie-Hellman](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman)
+key exchange
 to generate an AES key, using the client's private key and the recipient's
 public key. Both the sender and receiver can generate the *same* AES key in this
-way, and with this shared key they can use symmetric AES encyption to encrypt
-and decrypt messages.
+way, and with this shared key they can use
+[symmetric AES encyption](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard)
+to encrypt and decrypt messages.
 
 ## When does it not work?
 
