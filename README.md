@@ -15,9 +15,10 @@ for writing private notes.
 
 ## How it works
 
-Both clients create a public/private key pair. The public and private key are
-stored in the browser's secure storage, and the public key is published to
-the "keys" table in Convex.
+Each client creates a public/private key pair. The public and private key are
+stored in the
+[browser's storage](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API),
+and the public key is published to the "keys" table in Convex.
 
 To send a message, a client uses an
 [Elliptic Curve Diffie-Hellman](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman)
