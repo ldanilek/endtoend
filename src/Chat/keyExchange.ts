@@ -78,7 +78,7 @@ export function useKeyPair() {
   }, [openDatabase, storeKey]);
 
   useEffect(() => {
-    if (publicKeyBase64 && currentKey === null) {
+    if (publicKeyBase64 && currentKey !== publicKeyBase64) {
       void storeKeyForUser({ key: publicKeyBase64 });
     }
   }, [publicKeyBase64, currentKey, storeKeyForUser]);
