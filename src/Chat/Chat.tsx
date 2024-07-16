@@ -119,7 +119,6 @@ export function EncryptedChat(
   );
 }
 
-/*
 async function logKey(aesKey: CryptoKey) {
   try {
     const exported = await crypto.subtle.exportKey("raw", aesKey);
@@ -130,7 +129,6 @@ async function logKey(aesKey: CryptoKey) {
     console.error("Failed to export key:", error);
   }
 }
-  */
 
 export function DecryptedMessage({ encryptedBody, aesKey }: { encryptedBody: string, aesKey: CryptoKey }) {
   const [decryptedBody, setDecryptedBody] = useState<string | null>(null);
@@ -155,6 +153,7 @@ export function DecryptedMessage({ encryptedBody, aesKey }: { encryptedBody: str
 }
 
 async function encryptString(plaintext: string, aesKey: CryptoKey): Promise<string> {
+  await logKey(aesKey);
   const encoder = new TextEncoder();
   const data = encoder.encode(plaintext);
   
@@ -173,6 +172,7 @@ async function encryptString(plaintext: string, aesKey: CryptoKey): Promise<stri
 }
 
 async function decryptString(ciphertext: string, aesKey: CryptoKey): Promise<string> {
+  await logKey(aesKey);
   const encryptedArray = new Uint8Array(atob(ciphertext).split('').map(char => char.charCodeAt(0)));
   const iv = encryptedArray.slice(0, 12);
   const encryptedData = encryptedArray.slice(12);
