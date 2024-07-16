@@ -16,7 +16,7 @@ export function MultiChat({ viewer }: { viewer: Id<"users"> }) {
   const users = useQuery(api.users.list);
 
   return <div className="flex flex-row flex-grow overflow-hidden">
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 overflow-y-auto scroll-smooth p-1">
       {users?.map((user) => (
         <Button
           key={user._id}
@@ -57,7 +57,7 @@ export function Chat(
   }, [deriveSharedSecret, recipientKey]);
 
   if (!aesKey) {
-    return <div>Generating key…</div>;
+    return <div className="text-gray-500 p-4">Generating AES key…</div>;
   }
   return <EncryptedChat
     viewer={viewer}
