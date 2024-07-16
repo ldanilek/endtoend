@@ -130,8 +130,8 @@ export function DecryptedMessage({ encryptedBody, aesKey }: { encryptedBody: str
         console.log("decrypted", decryptedBody);
         setDecryptedBody(decryptedBody);
       } catch (error: any) {
+        console.error(error);
         if (error.message) {
-          console.error(error);
           setDecryptionError(error.message);
         }
       }
