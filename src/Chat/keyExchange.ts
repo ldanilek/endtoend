@@ -125,11 +125,11 @@ export function useKeyPair() {
 
       // Log the imported public key
       const exportedOtherPublicKey = await window.crypto.subtle.exportKey('raw', otherPublicKey);
-      console.log('Imported other public key:', new Uint8Array(exportedOtherPublicKey));
+      console.log('Imported other public key:', otherPublicKeyBase64, new Uint8Array(exportedOtherPublicKey));
 
       // Log our own public key
       const exportedOwnPublicKey = await window.crypto.subtle.exportKey('raw', keyPair.publicKey);
-      console.log('Our public key:', new Uint8Array(exportedOwnPublicKey));
+      console.log('Our public key:', publicKeyBase64, new Uint8Array(exportedOwnPublicKey));
 
       // Perform the key exchange
       const sharedSecret = await window.crypto.subtle.deriveBits(
