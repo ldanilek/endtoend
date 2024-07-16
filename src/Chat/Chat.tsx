@@ -29,7 +29,7 @@ export function MultiChat({ viewer }: { viewer: Id<"users"> }) {
       ))}
     </div>
     <div className="flex flex-col flex-grow">
-      <Chat viewer={viewer} recipient={recipient} />
+      <Chat key={recipient} viewer={viewer} recipient={recipient} />
     </div>
   </div>
 }
@@ -119,6 +119,19 @@ export function EncryptedChat(
   );
 }
 
+/*
+async function logKey(aesKey: CryptoKey) {
+  try {
+    const exported = await crypto.subtle.exportKey("raw", aesKey);
+    const exportedKeyBuffer = new Uint8Array(exported);
+    const base64Key = btoa(String.fromCharCode.apply(null, exportedKeyBuffer as any));
+    console.log("Exported key (base64):", base64Key);
+  } catch (error) {
+    console.error("Failed to export key:", error);
+  }
+}
+  */
+
 export function DecryptedMessage({ encryptedBody, aesKey }: { encryptedBody: string, aesKey: CryptoKey }) {
   const [decryptedBody, setDecryptedBody] = useState<string | null>(null);
   const [decryptionError, setDecryptionError] = useState<string | null>(null);
@@ -130,10 +143,8 @@ export function DecryptedMessage({ encryptedBody, aesKey }: { encryptedBody: str
         console.log("decrypted", decryptedBody);
         setDecryptedBody(decryptedBody);
       } catch (error: any) {
-        console.error(error);
-        if (error.message) {
-          setDecryptionError(error.message);
-        }
+        console.error(`decrypting ${encryptedBody} failed`, error);
+        setDecryptionError(error.message || "Decryption failed");
       }
     })();
   }, [encryptedBody, aesKey]);
@@ -166,17 +177,11 @@ async function decryptString(ciphertext: string, aesKey: CryptoKey): Promise<str
   const iv = encryptedArray.slice(0, 12);
   const encryptedData = encryptedArray.slice(12);
 
-  let decryptedData: ArrayBuffer;
-  try {
-    decryptedData = await crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv },
-      aesKey,
-      encryptedData
-    );
-  } catch (error: any) {
-    console.log("decryption error", error);
-    throw error;
-  }
+  const decryptedData = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv },
+    aesKey,
+    encryptedData
+  );
 
   const decoder = new TextDecoder();
   return decoder.decode(decryptedData);
