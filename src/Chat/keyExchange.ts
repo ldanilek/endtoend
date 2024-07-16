@@ -129,6 +129,7 @@ export function useKeyPair() {
         keyPair.privateKey,
         256
       );
+      console.log("shared secret is", sharedSecret);
 
       // Derive an AES key from the shared secret
       const aesKey = await window.crypto.subtle.deriveKey(
