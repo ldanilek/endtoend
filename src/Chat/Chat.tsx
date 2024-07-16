@@ -15,7 +15,7 @@ export function MultiChat({ viewer }: { viewer: Id<"users"> }) {
   const [recipient, setRecipient] = useState<Id<"users">>(viewer);
   const users = useQuery(api.users.list);
 
-  return <div className="flex flex-grow">
+  return <div className="flex flex-row flex-grow overflow-hidden">
     <div className="flex flex-col gap-2">
       {users?.map((user) => (
         <Button
