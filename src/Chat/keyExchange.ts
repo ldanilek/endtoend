@@ -123,21 +123,12 @@ export function useKeyPair() {
         []
       );
 
-      // Log the imported public key
-      const exportedOtherPublicKey = await window.crypto.subtle.exportKey('raw', otherPublicKey);
-      console.log('Imported other public key:', otherPublicKeyBase64, new Uint8Array(exportedOtherPublicKey));
-
-      // Log our own public key
-      const exportedOwnPublicKey = await window.crypto.subtle.exportKey('raw', keyPair.publicKey);
-      console.log('Our public key:', publicKeyBase64, new Uint8Array(exportedOwnPublicKey));
-
       // Perform the key exchange
       const sharedSecret = await window.crypto.subtle.deriveBits(
         { name: 'ECDH', public: otherPublicKey },
         keyPair.privateKey,
         256
       );
-      console.log('Shared secret:', new Uint8Array(sharedSecret));
 
       // Derive an AES key from the shared secret
       const aesKey = await window.crypto.subtle.deriveKey(
