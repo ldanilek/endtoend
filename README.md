@@ -26,7 +26,7 @@ key exchange
 to generate an AES key, using the client's private key and the recipient's
 public key. Both the sender and receiver can generate the *same* AES key in this
 way, and with this shared key they can use
-[symmetric AES encyption](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard)
+[symmetric AES encryption](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard)
 to encrypt and decrypt messages.
 
 ## When does it not work?
